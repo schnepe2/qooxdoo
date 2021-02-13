@@ -1,1 +1,1 @@
-require(`${__dirname}/compiled/node/source/compilerLibrary/index`);
+require("../compiled/node/source/compilerLibrary/index");
