@@ -52,7 +52,7 @@ servconf = {
 }
 
 workpackopts = [
-    #"--autPath /qx/tags/release_0_8_1/qooxdoo/framework/test/index.html"
+    #"--autPath /qx/tags/release_0_8_1/qooxdoo/test/index.html"
 ]
 
 

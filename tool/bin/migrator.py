@@ -765,8 +765,8 @@ def patchMakefile(makefilePath, newVersion, oldVersion):
     for line in inFile:
         line = re.sub(patchMakefileRe, "\g<1>" + newVersion, line)
         line = line.replace(
-             "frontend/framework/tool/make/project.mk",
-             "frontend/framework/tool/make/application.mk"
+             "frontend/tool/make/project.mk",
+             "frontend/tool/make/application.mk"
          )
         outFile.write(line)
     outFile.close()

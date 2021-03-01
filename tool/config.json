@@ -34,7 +34,7 @@
       ,"extend" : ["cache"]
       ,"=library" : 
       [ 
-        { "manifest" : "${QOOXDOO_PATH}/framework/Manifest.json" }
+        { "manifest" : "${QOOXDOO_PATH}/Manifest.json" }
        ,{ "manifest" : "${QOOXDOO_PATH}/component/apiviewer/Manifest.json"}
       ]
       ,"let"    :

@@ -4,7 +4,7 @@ do
 repl=`echo $class | sed s:"/H":"/V":g`
 echo ">>> Processing $class => $repl"
 
-cat framework/source/class/qx/ui/${class}.js | \
+cat source/class/qx/ui/${class}.js | \
   sed s:width:_xx1_:g | \
   sed s:height:_xx2_:g | \
   sed s:left:_xx3_:g | \
@@ -72,8 +72,8 @@ cat framework/source/class/qx/ui/${class}.js | \
   sed s:"hlayout":"vlayout":g | \
   sed s:"vertical row":"vertical column":g | \
   sed s:"Copybottom":"Copyright":g \
-> framework/source/class/qx/ui/${repl}.js
+> source/class/qx/ui/${repl}.js
 
-dos2unix framework/source/class/qx/ui/${repl}.js
+dos2unix source/class/qx/ui/${repl}.js
 
 done

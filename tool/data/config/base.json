@@ -58,7 +58,7 @@
       "library" :
       [
         {
-          "manifest" : "${QOOXDOO_PATH}/framework/Manifest.json"
+          "manifest" : "${QOOXDOO_PATH}/Manifest.json"
         },
 
         {
@@ -663,8 +663,8 @@
       "extend" : ["cache"],
       "let" :
       {
-        "QX_MOBILE_THEME_PATH" : "$${QOOXDOO_PATH}/framework/source/resource/qx/mobile",
-        "QX_SHARED_THEME_PATH" : "$${QOOXDOO_PATH}/framework/source/resource/qx/scss"
+        "QX_MOBILE_THEME_PATH" : "$${QOOXDOO_PATH}/source/resource/qx/mobile",
+        "QX_SHARED_THEME_PATH" : "$${QOOXDOO_PATH}/source/resource/qx/scss"
       },
       "shell" :
       {

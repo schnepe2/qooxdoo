@@ -25,7 +25,7 @@
           "manifest" : "./Manifest.json"  // the current application
         },
         {
-          "manifest" : "${QOOXDOO_PATH}/framework/Manifest.json"
+          "manifest" : "${QOOXDOO_PATH}/Manifest.json"
         },
 
         {

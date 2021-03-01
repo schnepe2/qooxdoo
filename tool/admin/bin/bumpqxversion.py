@@ -127,11 +127,11 @@ Files = {
     "./component/standalone/website/package.json": [
         (r'"version"\s*:\s*"(%s)"' % qxversion_regexp, npm_version_string),
         ],
-    "./framework/Manifest.json" : [
+    "./Manifest.json" : [
         r'"version"\s*:\s*"(%s)"'              % qxversion_regexp,
         r'"qooxdoo-versions"\s*:\s*\["(%s)"\]' % qxversion_regexp,
         ],
-    "./framework/package.json" : [
+    "./package.json" : [
         (r'"version"\s*:\s*"(%s)"' % qxversion_regexp, npm_version_string),
         ],
     "./index.html"  : [

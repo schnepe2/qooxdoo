@@ -36,7 +36,7 @@ CMD_NICE = nice -n 10
 export PYTHONPATH = $(CURDIR)/tool/pylib
 PATH_TOOL_BIN = $(CURDIR)/tool/bin
 PATH_TOOL_RESOURCES = $(CURDIR)/tool/admin/www/resources
-PATH_FRAMEWORK_RESOURCES = $(CURDIR)/framework/source/resource/qx/mobile
+PATH_FRAMEWORK_RESOURCES = $(CURDIR)/source/resource/qx/mobile
 PATH_MOBILE_SKELETON_RESOURCES = $(CURDIR)/component/skeleton/mobile/source/resource
 CMD_PYTHON = $(CMD_NICE) python -t -O
 CMD_REMOVE = $(CMD_NICE) rm -rf
@@ -164,9 +164,9 @@ release-sdk-svn-collect:
 	done
 
 	@echo "  * Synchronizing framework..."
-	@$(CMD_SYNC_OFFLINE) framework/api/* $(RELEASE_SDK)/framework/api
-	@$(CMD_MKDIR) $(RELEASE_SDK)/framework/source/script
-	@$(CMD_SYNC_OFFLINE) framework/source/script/dependencies.json $(RELEASE_SDK)/framework/source/script/dependencies.json
+	@$(CMD_SYNC_OFFLINE) api/* $(RELEASE_SDK)/api
+	@$(CMD_MKDIR) $(RELEASE_SDK)/source/script
+	@$(CMD_SYNC_OFFLINE) source/script/dependencies.json $(RELEASE_SDK)/source/script/dependencies.json
 
 	@echo "  * Synchronizing tools..."
 	@$(CMD_REMOVE) $(RELEASE_SDK)/tool/admin/
@@ -205,7 +205,7 @@ info-apiviewer:
 #apiviewer: info-apiviewer exec-apiviewer-build
 #
 #exec-apiviewer-build:
-#	@time ( cd framework && $(CMD_GENERATOR) api ) || exit 1
+#	@time ( cd . && $(CMD_GENERATOR) api ) || exit 1
 #
 
 ################################################################################
@@ -344,7 +344,7 @@ distclean:
 			(( cd $$F && $(CMD_GENERATOR) distclean ) || ( echo "Unable to distclean $$f"; exit 1 )); \
 		fi; \
 	done
-	@cd framework && $(CMD_GENERATOR) distclean
+	@cd . && $(CMD_GENERATOR) distclean
 	@$(CMD_REMOVE) application/*.zip
 	@$(CMD_REMOVE) release
 
@@ -697,7 +697,7 @@ framework_target = \
 	echo "****************************************************************************"; \
 	echo "  Generating Framework $${_targ_}"; \
 	echo "****************************************************************************"; \
-	( cd framework && $(CMD_GENERATOR) $${_targ_} ) || exit 1
+	( cd . && $(CMD_GENERATOR) $${_targ_} ) || exit 1
 
 # list all framework targets here explicitly, so they can be invoked individually
 framework-api:
@@ -727,27 +727,27 @@ framework-translation:
 framework-check:
 	@for TARGET in $(FRAMEWORK_TARGETS); do \
 		if [ "$$TARGET" = "dependencies" ]; then \
-			F="framework/source/script/dependencies.json"; \
+			F="source/script/dependencies.json"; \
 			[ -s $$F ] || ( echo "Missing $$F; run 'make publish-build' first!"; exit 1 ); \
 		else \
-			F="framework/$$TARGET/script"; \
+			F="$$TARGET/script"; \
 			[ -d $$F ] || ( echo "Missing $$F; run 'make publish-build' first!"; exit 1 ); \
 		fi; \
 	done
 
 framework-publish:
 	@echo "  * Syncing framework..."
-	@ssh $(STAGING_HOST) "$(CMD_MKDIR) /var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/framework"
+	@ssh $(STAGING_HOST) "$(CMD_MKDIR) /var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)"
 	@for APPLICATION in $(FRAMEWORK_TARGETS); do \
 	  echo "    - $$APPLICATION..."; \
 		if [ "$$APPLICATION" = "api" ]; then \
-			$(CMD_SYNC_ONLINE) framework/$$APPLICATION/* $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/apiviewer || exit 1; \
+			$(CMD_SYNC_ONLINE) $$APPLICATION/* $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/apiviewer || exit 1; \
 		fi; \
 		if [ "$$APPLICATION" = "test" ]; then \
-			$(CMD_SYNC_ONLINE) framework/$$APPLICATION/* $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/testrunner || exit 1; \
+			$(CMD_SYNC_ONLINE) $$APPLICATION/* $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/testrunner || exit 1; \
 		fi; \
 		if [ "$$APPLICATION" = "test-mobile" ]; then \
-			$(CMD_SYNC_ONLINE) framework/$$APPLICATION/* $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/mobile-tests || exit 1; \
+			$(CMD_SYNC_ONLINE) $$APPLICATION/* $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/mobile-tests || exit 1; \
 		fi; \
 	done
 
@@ -800,10 +800,10 @@ components-publish:
 					continue; \
 				fi; \
 				$(call make_versioned,L) \
-				$(CMD_SYNC_ONLINE) $$F $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/framework/$$L || exit 1; \
+				$(CMD_SYNC_ONLINE) $$F $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/$$L || exit 1; \
 			done; \
-			$(CMD_SYNC_ONLINE) component/standalone/$$COMPONENT/script/$(WEBSITE_MODULES_ZIP) $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/framework || exit 1; \
-			$(CMD_SYNC_ONLINE) component/standalone/$$COMPONENT/script/$(WEBSITE_MODULES_MIN_ZIP) $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/framework || exit 1; \
+			$(CMD_SYNC_ONLINE) component/standalone/$$COMPONENT/script/$(WEBSITE_MODULES_ZIP) $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION) || exit 1; \
+			$(CMD_SYNC_ONLINE) component/standalone/$$COMPONENT/script/$(WEBSITE_MODULES_MIN_ZIP) $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION) || exit 1; \
 			$(CMD_SYNC_ONLINE) component/standalone/$$COMPONENT/api/* $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/$$COMPONENT-api || exit 1; \
 			$(CMD_SYNC_ONLINE) component/standalone/$$COMPONENT/test/* $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/$$COMPONENT-tests || exit 1; \
 		elif [ "$$COMPONENT" = "server" ]; then \
@@ -815,7 +815,7 @@ components-publish:
 					fi; \
 				fi; \
 				$(call make_versioned,L) \
-				$(CMD_SYNC_ONLINE) $$F $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/framework/$$L || exit 1; \
+				$(CMD_SYNC_ONLINE) $$F $(STAGING_HOST):/var/www/qooxdoo/demo/$(FRAMEWORK_VERSION)/$$L || exit 1; \
 			done; \
 		fi; \
 	done

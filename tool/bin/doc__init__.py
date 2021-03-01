@@ -23,7 +23,7 @@
 #                   package doc files ("__init__.js"), using the
 #                   relative path as a package name
 #
-# usage: cd framework/source/class; doc__init__.py qx
+# usage: cd source/class; doc__init__.py qx
 ##
 
 import os, sys, re, string, types
